@@ -8,7 +8,7 @@ require("./models/video")
 const Video = mongoose.model("video")
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.5.10").then(()=>{
+mongoose.connect("mongodb+srv://salimo_carvalho:salimo_carvalho@cluster0.lokg7eq.mongodb.net/").then(()=>{
     console.log("banco de dados conectado com sucesso")
 }).catch(()=>{
     console.log("Falha ao se conectar ao Banco de dados")
@@ -65,6 +65,8 @@ app.get("/videos", (req,res)=>{
     })
 })
 
-app.listen(3000, () => {
-    console.log("Servidor a rodar em http://localhost:3000")
+const port = process.env.PORT || 3000
+app.listen(port, ()=>{
+    console.log("Servidor Rodando")
+
 })

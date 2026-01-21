@@ -1,79 +1,81 @@
-const express = require("express")
-const router = express.Router()
 const mongoose = require("mongoose")
+const express = require("express")
+const rounter = express.Router()
 require("../models/usuario")
 const Usuario = mongoose.model("usuarios")
-const bcrypt = require("bcryptjs")
+const bycrypt = require("bcryptjs")
 const passport = require("passport")
+// const router = require("./admin")
 
 
 
-router.get("/registo", (req, res) => {
-    return res.render("usuario/registo")
+
+
+rounter.get("/registo", (req, res) => {
+    res.render("usuario/registo")
 })
 
-router.post("/registo/feito", (req, res) => {
-    const Novousuarios = {
-        nome: req.body.nome,
-        email: req.body.email,
-        password: req.body.password,
-        passwordConfirm: req.body.passwordConfirm
-    }
 
+rounter.post("/registo/feito", (req, res) => {
 
+    Usuario.findOne({ email: req.body.email }).then((usuario) => {
+        console.log(usuario)
+        if (usuario) {
+            req.flash("error_msg", "Houve um erro ao tentar")
+            res.redirect("/usuario/registo")
+        } else {
 
-    if (Novousuarios.password != Novousuarios.passwordConfirm) {
-        req.flash("error_msg", "As senhas deve ser iguais")
-       return res.redirect("/usuario/registo")
-    }
-
-
-    bcrypt.genSalt(10, (erro, salt) => {
-        bcrypt.hash(Novousuarios.password, salt, (erro, hash) => {
-            if (erro) {
-                req.flash("error_msg", "Houve um erro ao tentar salvar")
-                return res.redirect("/")
-            } else {
-                Novousuarios.password = hash
-                Usuario.findOne({ email: req.body.email }).lean().then((user) => {
-                    if (user) {
-                        req.flash("error_msg", "Por favor o email encontra-se registado na base de dados")
-                        return res.render("usuario/registo")
-                    } else {
-                        new Usuario(Novousuarios).save().then(() => {
-                            req.flash("success_msg", "Usuario registado com sucesso")
-                            return res.render("usuario/login")
-                        }).catch(() => {
-                            req.flash("error_msg", "houve um erro ao tentar logar o usuario")
-                            return res.redirect("/usuario/registo")
-                        })
-
+            const usuarioNovo = new Usuario({
+                username: req.body.username,
+                email: req.body.email,
+                password: req.body.password,
+            })
+            bycrypt.genSalt(10, (erro, salt) => {
+                bycrypt.hash(usuarioNovo.password, salt, (erro, hash) => {
+                    if (erro) {
+                        req.flash("error_msg", "houve um erro ao salvar usuario")
+                        res.redirect("/")
                     }
-                }).catch(() => {
-                    req.flash("error_msg", "Houve um erro ao tentar tecnico")
-                    return res.redirect("/usuario/registo")
 
+                    usuarioNovo.password = hash
+
+                    usuarioNovo.save().then(() => {
+                        req.flash("success_msg", "Usuario Registado com sucesso")
+                        res.redirect("/usuario/login")
+                    }).catch(() => {
+                        req.flash("error_msg", "Houve um erro ao criar usuario")
+                        res.redirect("/")
+                    })
                 })
+            })
+        }
 
 
-            }
-        })
+
     })
-
-})
-
-router.get("/login", (req, res) => {
-    return res.render("usuario/login")
 })
 
 
-router.post("/login/feito", (req, res, next) => {
-    passport.authenticate(("local"), {
-        failureRedirect: "/usuario/login",
-        successRedirect: "/",
-        failureFlash: true
-    })(req, res, next)
+rounter.get("/login", (req, res) => {
+
+    res.render("usuario/login")
 })
 
+rounter.post("/login/feito", (req, res, next) => {
 
-module.exports = router
+
+        passport.authenticate("local", {
+            successRedirect:"/videos",
+            failureRedirect: "/usuario/login",
+            failureFlash: true
+        })(req, res, next)
+})
+
+// router.get("/registo", (req, res) => {
+//     res.render("/usuario/registo")
+// })
+// router.get("/entrar", (req, res) => {
+//     res.render("/usuario/login")
+// })
+
+module.exports = rounter

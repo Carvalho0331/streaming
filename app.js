@@ -33,7 +33,11 @@ app.use((req,res,next)=>{
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-
+mongoose.connect("mongodb+srv://salimo_carvalho:salimo_carvalho@cluster0.lokg7eq.mongodb.net/").then(()=>{
+    console.log("Banco de dados conectado com sucesso")
+}).catch(()=>{
+    console.log("Houve um erro ao tentar se conectar ao Banco")
+})
 app.engine("handlebars", handlebars.engine({defaultLayout:"main"}))
 app.set("view engine", "handlebars")
 
@@ -57,3 +61,4 @@ app.listen(port, ()=>{
     console.log("Servidor Rodando")
 
 })
+

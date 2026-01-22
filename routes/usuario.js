@@ -19,14 +19,13 @@ rounter.get("/registo", (req, res) => {
 rounter.post("/registo/feito", (req, res) => {
 
     Usuario.findOne({ email: req.body.email }).then((usuario) => {
-        console.log(usuario)
         if (usuario) {
             req.flash("error_msg", "Houve um erro ao tentar")
             res.redirect("/usuario/registo")
         } else {
 
             const usuarioNovo = new Usuario({
-                username: req.body.username,
+                nome: req.body.nome,
                 email: req.body.email,
                 password: req.body.password,
             })

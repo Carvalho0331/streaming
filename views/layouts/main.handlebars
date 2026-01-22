@@ -83,6 +83,91 @@
   transform: translateY(-2px);
 }
 
+/* Container geral */
+.grid-section {
+padding:10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+/* Caixa do formulário */
+.form {
+  width: 100%;
+  max-width: 380px;
+  background: #ffffff;
+  padding: 32px 28px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Título */
+.form h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #2c3e50;
+  font-size: 22px;
+}
+
+/* Labels */
+.form label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+  margin-top: 14px;
+}
+
+/* Inputs */
+.form input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Foco nos inputs */
+.form input:focus {
+  outline: none;
+  border-color: #2c5364;
+  box-shadow: 0 0 0 2px rgba(44, 83, 100, 0.2);
+}
+
+/* Botão */
+.form button {
+  margin-top: 24px;
+  padding: 12px;
+  background: #2c5364;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+/* Hover no botão */
+.form button:hover {
+  background: #203a43;
+  transform: translateY(-1px);
+}
+
+/* Active */
+.form button:active {
+  transform: translateY(0);
+}
+body{
+
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+*{
+  margin: 0;
+  padding: 0;
+}
 
 </style>
 <body>

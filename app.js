@@ -3,6 +3,7 @@ const app = express()
 const handlebars = require("express-handlebars")
 require("./models/usuario")
 const usuario = require("./routes/usuario")
+const video = require("./routes/videos")
 const passport = require("passport")
 const mongoose = require("mongoose")
 const path = require("path")
@@ -51,12 +52,11 @@ app.get("/", (req,res)=>{
     res.render("usuario/login")
 })
 
-app.get("/videos", (req,res)=>{
-    res.render("usuario/login")
-})
+
 
 
 app.use("/usuario", usuario)
+app.use("/videos", video)
 
 
 const port = process.env.PORT || 3000
